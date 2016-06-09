@@ -6,7 +6,8 @@
     [untangled.client.data-fetch :as df]
     [om.next :as om]))
 
-(def initial-state {:ui/react-key "abc"})
+(def initial-state {:ui/react-key "abc"
+                    :value "Hello"})
 
 (defonce app (atom (uc/new-untangled-client :initial-state initial-state)))
 
