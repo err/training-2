@@ -92,7 +92,11 @@
                (mapv ui-child children)))))
 
 (comment
+  ; Use the constructor of Main to get data to put into app state. IF you include replace, make it the current pane.
+  ; if you DON'T include the :replace, it will just get merged for potential use.
   (uc/merge-state! @app.core/app PaneSwitcher (uc/initial-state Main nil) :replace [:panes])
+  ; Merge in a new child (into the :child/by-id table via ident). The samples add-ons append-to,
+  ; replace, and prepend-to show how it can optionally be placed into an existing list elsewhere in the app state.
   (uc/merge-state! @app.core/app Child {:id 1 :label {:id 41 :value "Blammo!"}} :append-to [:children])
   (uc/merge-state! @app.core/app Child {:id 2 :label {:id 42 :value "Boo!"}} :replace [:children 0])
   (uc/merge-state! @app.core/app Child {:id 3 :label {:id 43 :value "oogle!"}} :prepend-to [:children]))
