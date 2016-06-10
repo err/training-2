@@ -15,21 +15,21 @@
                  [com.cemerick/piggieback "0.2.1"]
                  [org.clojure/tools.nrepl "0.2.12"]
                  [juxt/dirwatch "0.2.3"]
-                 [navis/untangled-client "0.5.1-SNAPSHOT" :exclusions [cljsjs/react org.omcljs/om]]
+                 [navis/untangled-client "0.5.2" :exclusions [cljsjs/react org.omcljs/om]]
                  [navis/untangled-server "0.4.8"]
                  [navis/untangled-spec "0.3.6"]
                  [navis/untangled-datomic "0.4.9" :exclusions [com.datomic/datomic-free org.clojure/tools.cli]]]
 
   :plugins [[lein-cljsbuild "1.1.3"]]
 
-  :source-paths ["dev/server" "src/server"]
+  :source-paths ["dev/server" "src/server" ]
   :test-paths ["test/client"]
   :jvm-opts ["-server" "-Xmx1024m" "-Xms512m" "-XX:-OmitStackTraceInFastThrow"]
   :clean-targets ^{:protect false} ["resources/public/js" "target"]
 
   :cljsbuild {:builds
               [{:id           "dev"
-                :source-paths ["src/client" "dev/client"]
+                :source-paths ["src/client" "dev/client" ]
                 :figwheel     true
                 :compiler     {:main                 cljs.user
                                :asset-path           "js/compiled/dev"
