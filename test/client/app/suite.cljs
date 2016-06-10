@@ -3,6 +3,7 @@
     [untangled-spec.reporters.suite :as ts])
   (:require
     untangled-spec.reporters.impl.suite
+    app.sample-spec
     ;; TODO: Require your specs here
     [devtools.core :as devtools]))
 
