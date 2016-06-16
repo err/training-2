@@ -15,9 +15,9 @@
                  [com.cemerick/piggieback "0.2.1"]
                  [org.clojure/tools.nrepl "0.2.12"]
                  [juxt/dirwatch "0.2.3"]
-                 [navis/untangled-client "0.5.2" :exclusions [cljsjs/react org.omcljs/om]]
-                 [navis/untangled-server "0.4.8"]
-                 [navis/untangled-spec "0.3.6"]
+                 [navis/untangled-client "0.5.3-SNAPSHOT" :exclusions [cljsjs/react org.omcljs/om]]
+                 [navis/untangled-server "0.6.0-SNAPSHOT"]
+                 [navis/untangled-spec "0.3.7-1"]
                  [navis/untangled-datomic "0.4.9" :exclusions [com.datomic/datomic-free org.clojure/tools.cli]]]
 
   :plugins [[lein-cljsbuild "1.1.3"]]

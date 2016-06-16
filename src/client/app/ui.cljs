@@ -20,7 +20,7 @@
 (def ui-label (om/factory Label {:keyfn :id}))
 
 (defui ^:once Child
-  static uc/Constructor
+  static uc/InitialAppState
   (uc/initial-state [clz params] {:ui/checked true})
   static om/IQuery
   (query [this] [:id {:label (om/get-query Label)}])
@@ -30,12 +30,12 @@
   (render [this]
     (let [{:keys [label]} (om/props this)]
       (dom/div #js {:className "xyz"}
-               (dom/span #js {:className "a"} (ui-label label))))))
+        (dom/span #js {:className "a"} (ui-label label))))))
 
 (def ui-child (om/factory Child {:keyfn :id}))
 
 (defui ^:once Settings
-  static uc/Constructor
+  static uc/InitialAppState
   (uc/initial-state [clz params] {:type :settings :id :singleton})
   static om/IQuery
   (query [this] [:type :id])
@@ -46,7 +46,7 @@
 (def ui-settings (om/factory Settings {:keyfn :type}))
 
 (defui ^:once Main
-  static uc/Constructor
+  static uc/InitialAppState
   (uc/initial-state [clz params] {:type :main :id :singleton})
   static om/IQuery
   (query [this] [:type :id])
@@ -57,7 +57,7 @@
 (def ui-main (om/factory Main {:keyfn :type}))
 
 (defui ^:once PaneSwitcher
-  static uc/Constructor
+  static uc/InitialAppState
   (uc/initial-state [clz params] (uc/initial-state Settings nil))
   static om/IQuery
   (query [this] {:settings (om/get-query Settings) :main (om/get-query Main)})
@@ -75,7 +75,7 @@
 
 
 (defui ^:once Root
-  static uc/Constructor
+  static uc/InitialAppState
   (uc/initial-state [clz params] {:ui/react-key "abc"
                                   :children     []
                                   :panes        (uc/initial-state PaneSwitcher nil)})
@@ -86,10 +86,10 @@
   (render [this]
     (let [{:keys [ui/react-key value children panes] :or {value ""}} (om/props this)]
       (dom/div #js {:key react-key}
-               (dom/input #js {:type "text" :value value})
-               (dom/button #js {:onClick (fn [evt] (om/transact! this '[(set-to-tony)]))} "Set to Tony")
-               (ui-panes panes)
-               (mapv ui-child children)))))
+        (dom/input #js {:type "text" :value value})
+        (dom/button #js {:onClick (fn [evt] (om/transact! this '[(set-to-tony)]))} "Set to Tony")
+        (ui-panes panes)
+        (mapv ui-child children)))))
 
 (comment
   ; Use the constructor of Main to get data to put into app state. IF you include replace, make it the current pane.
@@ -97,6 +97,6 @@
   (uc/merge-state! @app.core/app PaneSwitcher (uc/initial-state Main nil) :replace [:panes])
   ; Merge in a new child (into the :child/by-id table via ident). The samples add-ons append-to,
   ; replace, and prepend-to show how it can optionally be placed into an existing list elsewhere in the app state.
-  (uc/merge-state! @app.core/app Child {:id 1 :label {:id 41 :value "Blammo!"}} :append-to [:children])
+  (uc/merge-state! @app.core/app Child {:id 1 :label {:id 41 :value "Blammo!"}} :append [:children])
   (uc/merge-state! @app.core/app Child {:id 2 :label {:id 42 :value "Boo!"}} :replace [:children 0])
-  (uc/merge-state! @app.core/app Child {:id 3 :label {:id 43 :value "oogle!"}} :prepend-to [:children]))
+  (uc/merge-state! @app.core/app Child {:id 3 :label {:id 43 :value "oogle!"}} :prepend [:children]))
