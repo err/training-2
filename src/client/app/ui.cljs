@@ -2,6 +2,7 @@
   (:require [om.dom :as dom]
             [om.next :as om :refer-macros [defui]]
             [untangled.i18n :refer-macros [tr trf]]
+            [untangled.client.logging :as log]
             [untangled.client.core :as uc]
             yahoo.intl-messageformat-with-locales
             [untangled.client.data-fetch :as df]
@@ -58,7 +59,7 @@
 
 (defui ^:once PaneSwitcher
   static uc/InitialAppState
-  (uc/initial-state [clz params] (uc/initial-state Settings nil))
+  (uc/initial-state [clz params] (uc/initial-state Main nil))
   static om/IQuery
   (query [this] {:settings (om/get-query Settings) :main (om/get-query Main)})
   static om/Ident
@@ -71,8 +72,7 @@
         :main (ui-main props)
         (dom/p nil "NO PANE!")))))
 
-(def ui-panes (om/factory PaneSwitcher {:keyfn :id}))
-
+(def ui-panes (om/factory PaneSwitcher {:keyfn :type}))
 
 (defui ^:once Root
   static uc/InitialAppState
@@ -87,11 +87,16 @@
     (let [{:keys [ui/react-key value children panes] :or {value ""}} (om/props this)]
       (dom/div #js {:key react-key}
         (dom/input #js {:type "text" :value value})
+        (dom/button #js {:onClick (fn [evt] (om/transact! this '[(nav/settings)]))} "Go to settings")
+        (dom/button #js {:onClick (fn [evt] (om/transact! this '[(nav/main)]))} "Go to main")
         (dom/button #js {:onClick (fn [evt] (om/transact! this '[(set-to-tony)]))} "Set to Tony")
         (ui-panes panes)
         (mapv ui-child children)))))
 
+
+
 (comment
+
   ; Use the constructor of Main to get data to put into app state. IF you include replace, make it the current pane.
   ; if you DON'T include the :replace, it will just get merged for potential use.
   (uc/merge-state! @app.core/app PaneSwitcher (uc/initial-state Main nil) :replace [:panes])
